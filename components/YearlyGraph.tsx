@@ -1,18 +1,14 @@
-import React from "react";
+import subDays from "date-fns/subDays";
 
-const DAY_MS = 1000 * 60 * 60 * 24;
-
-// dates from a sunday that was at least a year ago until today
+// dates from the first sunday that was at least a year ago until today
 function buildDates(): Date[] {
-  const todayMs = Date.now();
-
   let dates = [];
 
   let pointer = new Date();
   let i = 0;
 
   while (i <= 365 || pointer.getDay() !== 0) {
-    pointer = new Date(todayMs - i * DAY_MS);
+    pointer = subDays(pointer, 1);
     dates.push(pointer);
     i++;
   }
@@ -20,7 +16,7 @@ function buildDates(): Date[] {
   return dates.reverse();
 }
 
-const YearlyGraph: React.FC = () => {
+const YearlyGraph = () => {
   const dates = buildDates();
 
   // can be done faster
