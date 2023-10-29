@@ -1,35 +1,31 @@
-import subDays from "date-fns/subDays";
-
-// dates from the first sunday that was at least a year ago until today
-function buildDates(): Date[] {
-  let dates = [];
-
-  let pointer = new Date();
-  let i = 0;
-
-  while (i <= 365 || pointer.getDay() !== 0) {
-    pointer = subDays(pointer, 1);
-    dates.push(pointer);
-    i++;
-  }
-
-  return dates.reverse();
-}
+import classNames from "classnames";
+import { buildCalendarDates } from "../utils/buildCalendarDates";
 
 const YearlyGraph = () => {
-  const dates = buildDates();
+  const dates = buildCalendarDates();
 
   // can be done faster
   const dayRows = [0, 1, 2, 3, 4, 5, 6].map((n) =>
     dates.filter((d) => d.getDay() === n),
   );
 
+  const active = true;
+
   return (
     <div className="w-min">
       {dayRows.map((dayRow, i) => (
-        <div key={i}>
+        <div className="flex" key={i}>
           {dayRow.map((d) => (
-            <span key={d.toString()}>*</span>
+            <div
+              className={classNames(
+                "h-2 m-0.5 w-2",
+                Math.round(Math.random()) === 1
+                  ? "bg-green-500"
+                  : "bg-zinc-500",
+              )}
+              key={d.toString()}
+              style={{ borderRadius: "1px" }}
+            />
           ))}
         </div>
       ))}
